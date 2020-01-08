@@ -1,0 +1,37 @@
+.card {
+    border: 1px solid rgba(0,0,0,0);
+}
+
+a:link {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+a:active {
+    color: black;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.icon-remove {
+    color: #c0392b;
+}
+
+.icon-edit {
+    color: #2980b9;
+}
+
+.icon-add {
+    position: absolute;
+    content: '';
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+    color: #27ae60;
+    font-size: 50px;
+}

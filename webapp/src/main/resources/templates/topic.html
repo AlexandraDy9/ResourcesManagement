@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/topic.css" th:href="@{/css/topic.css}">
+    <title>Topic</title>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="mt-2 mb-4" th:text="${resource.title}"></h1>
+
+    <div class="card mb-4" th:switch="${topics}">
+        <h2 th:case="${topics.size() == 0}">No resources yet!</h2>
+        <div th:case="*">
+            <div th:each="topic:${topics}">
+                <div class="card border-primary mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title" th:text="${topic.title}"></h6>
+                        <p class="card-text" th:text="${topic.description}"></p>
+                        <div class="card-footer">
+                            <i data-toggle="modal" data-target="#updateModal"
+                               class="updateTopic icon icon-edit fas fa-edit mr-3"
+                               th:data-value="${topic.description}">
+                            </i>
+
+                            <a th:href="@{/topic/delete/{title}(title=${topic.title})}">
+                                <i class="icon icon-remove fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<i data-toggle="modal" data-target="#addModal" class="icon icon-add fas fa-plus-square"></i>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" th:action="@{/topic/add/{resource}(resource=${resource.getTitle()})}"
+                  th:object="${addTopic}" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="topicTitle">Title</label>
+                        <input id="topicTitle" class="form-control" th:field="*{title}" type="text"
+                               placeholder="Topic title">
+                        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="topicDescription">Description</label>
+                        <input id="topicDescription" class="form-control" th:field="*{description}" type="text"
+                               placeholder="Topic description">
+                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="topicDescriptionUpdate">New description</label>
+                <input class="form-control" type="text" name="topicDescriptionUpdate" id="topicDescriptionUpdate" value="">
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/0f1788d72a.js" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/topic.js}" ></script>
+</body>
+
+</html>

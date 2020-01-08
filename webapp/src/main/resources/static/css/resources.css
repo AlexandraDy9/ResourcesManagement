@@ -1,0 +1,28 @@
+a {
+    color: black;
+}
+
+a:link {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+a:active {
+    color: black;
+}
+
+.card-img-top {
+    height: 200px;
+}
+
+.card {
+    cursor: pointer;
+    transition: all .3s ease-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
