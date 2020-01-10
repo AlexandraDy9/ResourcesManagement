@@ -2,27 +2,27 @@ package com.tw.management.resources.model;
 
 public class ResourceDao {
 
-    private long id;
-
     private String title;
+
+    private String description;
 
     private String photo;
 
     public ResourceDao() {
     }
 
-    public ResourceDao(long id, String title, String photo) {
-        this.id = id;
+    public ResourceDao(String title, String description, String photo) {
         this.title = title;
+        this.description = description;
         this.photo = photo;
     }
 
-    public long getId() {
-        return id;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getTitle() {

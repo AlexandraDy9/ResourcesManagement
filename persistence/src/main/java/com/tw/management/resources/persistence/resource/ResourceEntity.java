@@ -2,10 +2,10 @@ package com.tw.management.resources.persistence.resource;
 
 import com.tw.management.resources.persistence.base.BaseEntity;
 import com.tw.management.resources.persistence.right.RightsEntity;
-import com.tw.management.resources.persistence.topic.TopicEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity(name = "resource")
@@ -19,18 +19,20 @@ public class ResourceEntity extends BaseEntity {
     @NotEmpty
     private String photo;
 
-    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
-    private List<TopicEntity> topics;
+    @NotEmpty
+    @Size(max=600)
+    private String description;
 
     @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
     private List<RightsEntity> rights;
 
     public ResourceEntity() { }
 
-    public ResourceEntity(String title,String photo, List<TopicEntity> topics) {
+    public ResourceEntity(@NotEmpty String title, @NotEmpty String photo, @NotEmpty String description, List<RightsEntity> rights) {
         this.title = title;
         this.photo = photo;
-        this.topics = topics;
+        this.description = description;
+        this.rights = rights;
     }
 
     public String getTitle() {
@@ -49,12 +51,12 @@ public class ResourceEntity extends BaseEntity {
         this.photo = photo;
     }
 
-    public List<TopicEntity> getTopics() {
-        return topics;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTopics(List<TopicEntity> topics) {
-        this.topics = topics;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<RightsEntity> getRights() {

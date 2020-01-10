@@ -2,7 +2,6 @@ package com.tw.management.resources.persistence.right;
 
 import com.tw.management.resources.persistence.base.BaseEntity;
 import com.tw.management.resources.persistence.resource.ResourceEntity;
-import com.tw.management.resources.persistence.topic.TopicEntity;
 import com.tw.management.resources.persistence.user_rights.UserRightsEntity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

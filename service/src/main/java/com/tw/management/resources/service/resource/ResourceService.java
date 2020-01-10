@@ -2,10 +2,11 @@ package com.tw.management.resources.service.resource;
 
 
 import com.tw.management.resources.model.ResourceDao;
-import com.tw.management.resources.model.TopicDao;
+import com.tw.management.resources.persistence.resource.ResourceEntity;
 import com.tw.management.resources.persistence.resource.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,8 +24,27 @@ public class ResourceService {
         return ResourceConverter.convertToDaoList(resourceRepository.findAll());
     }
 
-    public ResourceDao getById(long id) {
-        return ResourceConverter.convertToDao(resourceRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid resource with Id:" + id)));
+    public ResourceDao getByTitle(String title) {
+        return ResourceConverter.convertToDao(resourceRepository.findByTitle(title));
+    }
+
+    @Transactional
+    public void add(ResourceDao resourceDao) {
+        resourceRepository.save(ResourceConverter.convertFromDao(resourceDao));
+    }
+
+    @Transactional
+    public void delete(String title) {
+        ResourceEntity resource = resourceRepository.findByTitle(title);
+        resourceRepository.delete(resource);
+    }
+
+    @Transactional
+    public void update(String title, ResourceDao newResource) {
+        ResourceEntity currentResource = resourceRepository.findByTitle(title);
+        currentResource.setTitle(newResource.getTitle());
+        currentResource.setDescription(newResource.getDescription());
+        currentResource.setPhoto(newResource.getPhoto());
+        resourceRepository.save(currentResource);
     }
 }

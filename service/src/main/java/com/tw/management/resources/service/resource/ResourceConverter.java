@@ -9,8 +9,8 @@ public class ResourceConverter {
 
     public static ResourceDao convertToDao(ResourceEntity resource) {
         return new ResourceDao(
-                resource.getId(),
                 resource.getTitle(),
+                resource.getDescription(),
                 resource.getPhoto()
         );
     }
@@ -19,6 +19,7 @@ public class ResourceConverter {
         return new ResourceEntity(
                 resource.getTitle(),
                 resource.getPhoto(),
+                resource.getDescription(),
                 new ArrayList<>()
         );
     }
