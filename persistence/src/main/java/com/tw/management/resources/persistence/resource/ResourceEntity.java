@@ -16,11 +16,9 @@ public class ResourceEntity extends BaseEntity {
     @NotEmpty
     private String title;
 
-    @NotEmpty
     private String photo;
 
-    @NotEmpty
-    @Size(max=600)
+    @Size(max=1000)
     private String description;
 
     @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
@@ -28,7 +26,7 @@ public class ResourceEntity extends BaseEntity {
 
     public ResourceEntity() { }
 
-    public ResourceEntity(@NotEmpty String title, @NotEmpty String photo, @NotEmpty String description, List<RightsEntity> rights) {
+    public ResourceEntity(String title, String photo, String description, List<RightsEntity> rights) {
         this.title = title;
         this.photo = photo;
         this.description = description;

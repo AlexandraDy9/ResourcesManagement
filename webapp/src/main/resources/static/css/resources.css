@@ -1,3 +1,35 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 10px 40px;
+    height: 100%;
+    background-color: rgba(236, 240, 241, 0.25);
+}
+
+.logout {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logout-button {
+    padding: 4px 14px;
+    font-size: 14px;
+    background-color: #e74c3c;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
 a {
     color: black;
 }
@@ -36,12 +68,23 @@ a:active {
     color: #c0392b;
 }
 
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
 .icon-add {
     position: absolute;
-    content: '';
+    content: "";
     bottom: 0;
     right: 0;
     margin: 20px;
     color: #27ae60;
     font-size: 50px;
+}
+
+:focus {
+    outline: none;
 }

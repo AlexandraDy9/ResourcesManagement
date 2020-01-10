@@ -33,7 +33,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     public UserEntity() { }
 
-    public UserEntity(@NotEmpty String username, @NotEmpty String password, @NotNull Boolean role, List<UserRightsEntity> userRights) {
+    public UserEntity(String username, String password, Boolean role, List<UserRightsEntity> userRights) {
         this.username = username;
         this.password = password;
         this.role = role;

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ResourceRepository extends JpaRepository<ResourceEntity, Long> {
 
     ResourceEntity findByTitle(String title);
+
+    boolean existsByTitle(String title);
 }
