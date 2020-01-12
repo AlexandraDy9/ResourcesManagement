@@ -1,7 +1,7 @@
 package com.tw.management.resources.persistence.resource;
 
 import com.tw.management.resources.persistence.base.BaseEntity;
-import com.tw.management.resources.persistence.right.RightsEntity;
+import com.tw.management.resources.persistence.roles.RolesEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -22,15 +22,15 @@ public class ResourceEntity extends BaseEntity {
     private String description;
 
     @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
-    private List<RightsEntity> rights;
+    private List<RolesEntity> roles;
 
     public ResourceEntity() { }
 
-    public ResourceEntity(String title, String photo, String description, List<RightsEntity> rights) {
+    public ResourceEntity(String title, String photo, String description, List<RolesEntity> roles) {
         this.title = title;
         this.photo = photo;
         this.description = description;
-        this.rights = rights;
+        this.roles = roles;
     }
 
     public String getTitle() {
@@ -57,11 +57,11 @@ public class ResourceEntity extends BaseEntity {
         this.description = description;
     }
 
-    public List<RightsEntity> getRights() {
-        return rights;
+    public List<RolesEntity> getRoles() {
+        return roles;
     }
 
-    public void setRights(List<RightsEntity> rights) {
-        this.rights = rights;
+    public void setRoles(List<RolesEntity> rights) {
+        this.roles = roles;
     }
 }

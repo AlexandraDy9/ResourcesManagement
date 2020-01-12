@@ -2,7 +2,7 @@ package com.tw.management.resources.persistence.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tw.management.resources.persistence.base.BaseEntity;
-import com.tw.management.resources.persistence.user_rights.UserRightsEntity;
+import com.tw.management.resources.persistence.roles.RolesEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,18 +26,21 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String password;
 
     @NotNull
-    private Boolean role;
+    private Boolean isAdmin;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserRightsEntity> userRights;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "User_Role",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private List<RolesEntity> roles;
 
     public UserEntity() { }
 
-    public UserEntity(String username, String password, Boolean role, List<UserRightsEntity> userRights) {
+    public UserEntity(String username, String password, Boolean role, List<RolesEntity> roles) {
         this.username = username;
         this.password = password;
-        this.role = role;
-        this.userRights = userRights;
+        this.isAdmin = isAdmin;
+        this.roles = roles;
     }
 
     public String getUsername() {
@@ -56,20 +59,20 @@ public class UserEntity extends BaseEntity implements UserDetails {
         this.password = password;
     }
 
-    public Boolean getRole() {
-        return role;
+    public Boolean getAdmin() {
+        return isAdmin;
     }
 
-    public void setRole(Boolean role) {
-        this.role = role;
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 
-    public List<UserRightsEntity> getUserRights() {
-        return userRights;
+    public List<RolesEntity> getRoles() {
+        return roles;
     }
 
-    public void setUserRights(List<UserRightsEntity> userRights) {
-        this.userRights = userRights;
+    public void setRoles(List<RolesEntity> roles) {
+        this.roles = roles;
     }
 
     @JsonIgnore

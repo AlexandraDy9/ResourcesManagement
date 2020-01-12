@@ -1,9 +1,12 @@
 package com.tw.management.resources.persistence.right;
 
 import com.tw.management.resources.persistence.base.BaseEntity;
-import com.tw.management.resources.persistence.resource.ResourceEntity;
-import com.tw.management.resources.persistence.user_rights.UserRightsEntity;
-import javax.persistence.*;
+import com.tw.management.resources.persistence.roles.RolesEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -14,12 +17,8 @@ public class RightsEntity extends BaseEntity {
     @NotEmpty
     private Rights rightType;
 
-    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-    private List<UserRightsEntity> users;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_resource")
-    private ResourceEntity resource;
+    @ManyToMany(mappedBy = "rights")
+    private List<RolesEntity> roles;
 
     public RightsEntity() { }
 
@@ -31,19 +30,11 @@ public class RightsEntity extends BaseEntity {
         this.rightType = rightType;
     }
 
-    public List<UserRightsEntity> getUsers() {
-        return users;
+    public List<RolesEntity> getRoles() {
+        return roles;
     }
 
-    public void setUsers(List<UserRightsEntity> users) {
-        this.users = users;
-    }
-
-    public ResourceEntity getResource() {
-        return resource;
-    }
-
-    public void setResource(ResourceEntity resource) {
-        this.resource = resource;
+    public void setRoles(List<RolesEntity> roles) {
+        this.roles = roles;
     }
 }

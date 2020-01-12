@@ -1,7 +1,6 @@
 package com.tw.management.resources.service.user;
 
 import com.tw.management.resources.model.UserDao;
-import com.tw.management.resources.persistence.user.Role;
 import com.tw.management.resources.persistence.user.UserEntity;
 import com.tw.management.resources.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
