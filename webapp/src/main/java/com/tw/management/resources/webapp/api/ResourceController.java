@@ -81,6 +81,7 @@ public class ResourceController {
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
         model.addAttribute("currentUser", principalService.getPrincipal());
+        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
 
         return "resources";
     }
@@ -100,6 +101,7 @@ public class ResourceController {
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
         model.addAttribute("currentUser", principalService.getPrincipal());
+        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
 
         return "resources";
     }
@@ -115,6 +117,7 @@ public class ResourceController {
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
         model.addAttribute("currentUser", principalService.getPrincipal());
+        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
 
         return "resources";
     }
@@ -125,8 +128,6 @@ public class ResourceController {
         model.addAttribute("usersList", userService.getAllUsers());
         model.addAttribute("rightsList", new ArrayList<>(Arrays.asList(Rights.values())));
         model.addAttribute("addRight", new RightDto());
-
-        userService.getRights(principalService.getPrincipal());
 
         return "admin";
     }
@@ -143,6 +144,7 @@ public class ResourceController {
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
         model.addAttribute("currentUser", principalService.getPrincipal());
+        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
 
         return "resources";
     }

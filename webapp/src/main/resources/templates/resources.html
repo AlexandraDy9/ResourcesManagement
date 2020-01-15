@@ -40,7 +40,7 @@
                                     <a th:href="@{/resources/edit/{title}(title=${resource.title})}">
                                         <small
                                                 th:if="${userRights.containsKey(resource.title)}"
-                                                th:style="${userRights.get(resource.title).getRightType() == T(com.tw.management.resources.persistence.right.Rights).Read} ? 'display:1;' : 'display:none;'"
+                                                th:style="${userRights.get(resource.title).contains(T(com.tw.management.resources.persistence.right.Rights).Read)}? 'display:1;' : 'display:none;'"
                                                 class="text-muted">Read more ....
                                         </small>
                                     </a>
@@ -55,7 +55,7 @@
                                 <a th:href="@{/resources/delete/{title}(title=${resource.title})}">
                                     <i class="icon icon-remove fas fa-trash"
                                        th:if="${userRights.containsKey(resource.title)}"
-                                       th:style="${userRights.get(resource.title).getRightType() == T(com.tw.management.resources.persistence.right.Rights).Delete} ? 'display:1;' : 'display:none;'"></i>
+                                       th:style="${userRights.get(resource.title).contains(T(com.tw.management.resources.persistence.right.Rights).Delete) } ? 'display:1;' : 'display:none;'"></i>
                                 </a>
                             </div>
                         </div>

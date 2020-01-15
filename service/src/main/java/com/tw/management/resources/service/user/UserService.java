@@ -73,11 +73,18 @@ public class UserService {
 //    }
 
 
-    public Map<String, RightsEntity> getRights(UserEntity userEntity) {
-        Map<String, RightsEntity> rightsMap = new HashMap<>();
+    public Map<String, List<Rights>> getRights(UserEntity userEntity) {
+        Map<String, List<Rights>> rightsMap = new HashMap<>();
 
         userEntity.getRoles().forEach((role) -> role.getRights().forEach((right) -> {
-            rightsMap.put(role.getResource().getTitle(), right);
+            if (rightsMap.containsKey(role.getResource().getTitle())) {
+                rightsMap.get(role.getResource().getTitle()).add(right.getRightType());
+            }
+            else {
+                rightsMap.put(role.getResource().getTitle(), new ArrayList<Rights>() {{
+                    add(right.getRightType());
+                }});
+            }
         }));
 
         return rightsMap;
