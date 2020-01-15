@@ -47,12 +47,11 @@ a:active {
 }
 
 .card-img-top {
-    height: 260px;
+    height: 300px;
     object-fit: fill;
 }
 
 .card {
-    cursor: pointer;
     transition: all .3s ease-out;
 }
 
@@ -60,12 +59,34 @@ a:active {
     transform: scale(1.05);
 }
 
+.resource-card {
+    width: 1000px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+}
+
 .icon {
     cursor: pointer;
 }
 
+.icon-admin {
+    color: #3498db;
+    margin-right: 30px;
+}
+
+.icon-admin:hover {
+    transform: scale(1.6);
+}
+
 .icon-remove {
     color: #c0392b;
+}
+
+.icon-remove:hover {
+    transform: scale(1.6);
 }
 
 .footer {
@@ -76,7 +97,7 @@ a:active {
 }
 
 .icon-add {
-    position: absolute;
+    position: fixed;
     content: "";
     bottom: 0;
     right: 0;

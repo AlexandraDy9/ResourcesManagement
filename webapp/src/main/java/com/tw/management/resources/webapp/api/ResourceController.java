@@ -2,7 +2,11 @@ package com.tw.management.resources.webapp.api;
 
 
 import com.tw.management.resources.model.ResourceDao;
+import com.tw.management.resources.model.RightDto;
+import com.tw.management.resources.persistence.right.Rights;
+import com.tw.management.resources.service.principal.PrincipalService;
 import com.tw.management.resources.service.resource.ResourceService;
+import com.tw.management.resources.service.user.UserService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
@@ -21,16 +27,23 @@ import java.util.NoSuchElementException;
 public class ResourceController {
 
     private final ResourceService resourceService;
+    private final PrincipalService principalService;
+    private final UserService userService;
+
 
     @Autowired
-    public ResourceController(ResourceService resourceService) {
+    public ResourceController(ResourceService resourceService, PrincipalService principalService, UserService userService) {
         this.resourceService = resourceService;
+        this.principalService = principalService;
+        this.userService = userService;
     }
 
     @GetMapping
     public String get(Model model) {
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
+        model.addAttribute("currentUser", principalService.getPrincipal());
+        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
 
         return "resources";
     }
@@ -47,6 +60,7 @@ public class ResourceController {
 
         model.addAttribute("resource", resourceDao);
         model.addAttribute("updateResource", new ResourceDao());
+        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
 
         return "update-resource";
     }
@@ -66,6 +80,7 @@ public class ResourceController {
 
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
+        model.addAttribute("currentUser", principalService.getPrincipal());
 
         return "resources";
     }
@@ -84,6 +99,7 @@ public class ResourceController {
 
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
+        model.addAttribute("currentUser", principalService.getPrincipal());
 
         return "resources";
     }
@@ -98,8 +114,36 @@ public class ResourceController {
 
         model.addAttribute("resourcesList", resourceService.getAll());
         model.addAttribute("addResource", new ResourceDao());
+        model.addAttribute("currentUser", principalService.getPrincipal());
 
         return "resources";
+    }
 
+    @GetMapping(value = "/admin/{title}")
+    public String ListsForAdmin(@PathVariable("title") String title, Model model) {
+        model.addAttribute("resourceTitle", title);
+        model.addAttribute("usersList", userService.getAllUsers());
+        model.addAttribute("rightsList", new ArrayList<>(Arrays.asList(Rights.values())));
+        model.addAttribute("addRight", new RightDto());
+
+        userService.getRights(principalService.getPrincipal());
+
+        return "admin";
+    }
+
+    @PostMapping(value = "/admin/assignment/{title}")
+    public String AssignmentAdmin(@PathVariable("title") String title, @Valid RightDto rightDto, Model model) {
+
+        try {
+            userService.assignRights(title, rightDto.getUser(), rightDto.getRight());
+        } catch (NullPointerException | NoSuchElementException e) {
+            System.out.println(e.getMessage());
+        }
+
+        model.addAttribute("resourcesList", resourceService.getAll());
+        model.addAttribute("addResource", new ResourceDao());
+        model.addAttribute("currentUser", principalService.getPrincipal());
+
+        return "resources";
     }
 }

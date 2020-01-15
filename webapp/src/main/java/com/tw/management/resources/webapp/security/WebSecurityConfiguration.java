@@ -3,6 +3,7 @@ package com.tw.management.resources.webapp.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,7 +14,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -39,14 +43,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             http
                     .httpBasic().and()
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.GET, "/api/user/principal").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/topic").permitAll()
+                    .antMatchers(HttpMethod.GET, "/user/principal").permitAll()
                     .antMatchers(HttpMethod.GET, "/configuration/ui", "/swagger-resources/**", "/configuration/auth", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated()
                     .and()
-                    .logout().logoutUrl("/api/logout").permitAll().and()
-                    .csrf().disable();
-
+                    .logout()
+                    .logoutUrl("/logout").permitAll();
             http
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)

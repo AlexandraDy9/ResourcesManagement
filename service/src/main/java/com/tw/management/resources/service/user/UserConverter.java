@@ -7,12 +7,26 @@ import java.util.*;
 
 class UserConverter {
 
+    static UserDao convertToDao(UserEntity user) {
+        return new UserDao(
+                user.getUsername(),
+                user.getPassword()
+        );
+    }
+
     static UserEntity convertFromDao(UserDao user) {
         return new UserEntity(
                 user.getUsername(),
                 user.getPassword(),
                 true,
-                new ArrayList<>()
+                new HashSet<>()
         );
+    }
+
+    static List<UserDao> convertToDaoList(List<UserEntity> categoryList) {
+        List<UserDao> resourceDaoList = new ArrayList<>();
+        categoryList.forEach(category -> resourceDaoList.add(convertToDao(category)));
+
+        return resourceDaoList;
     }
 }

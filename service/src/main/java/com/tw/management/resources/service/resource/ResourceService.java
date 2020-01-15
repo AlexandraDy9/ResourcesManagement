@@ -4,6 +4,7 @@ package com.tw.management.resources.service.resource;
 import com.tw.management.resources.model.ResourceDao;
 import com.tw.management.resources.persistence.resource.ResourceEntity;
 import com.tw.management.resources.persistence.resource.ResourceRepository;
+import com.tw.management.resources.persistence.roles.RolesRepository;
 import javassist.NotFoundException;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ import java.util.NoSuchElementException;
 public class ResourceService {
 
     private final ResourceRepository resourceRepository;
+    private final RolesRepository rolesRepository;
 
     @Autowired
-    public ResourceService(ResourceRepository resourceRepository) {
+    public ResourceService(ResourceRepository resourceRepository, RolesRepository rolesRepository) {
         this.resourceRepository = resourceRepository;
+        this.rolesRepository = rolesRepository;
     }
 
     public List<ResourceDao> getAll() {
@@ -58,6 +61,7 @@ public class ResourceService {
 
             else {
                 ResourceEntity resource = resourceRepository.findByTitle(title);
+                rolesRepository.deleteByResource(resource);
                 resourceRepository.delete(resource);
             }
         }

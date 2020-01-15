@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -28,18 +29,17 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @NotNull
     private Boolean isAdmin;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "User_Role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<RolesEntity> roles;
+    private Set<RolesEntity> roles;
 
     public UserEntity() { }
 
-    public UserEntity(String username, String password, Boolean role, List<RolesEntity> roles) {
+    public UserEntity(String username, String password, Boolean role, Set<RolesEntity> roles) {
         this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
         this.roles = roles;
     }
 
@@ -67,11 +67,11 @@ public class UserEntity extends BaseEntity implements UserDetails {
         isAdmin = admin;
     }
 
-    public List<RolesEntity> getRoles() {
+    public Set<RolesEntity> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RolesEntity> roles) {
+    public void setRoles(Set<RolesEntity> roles) {
         this.roles = roles;
     }
 
