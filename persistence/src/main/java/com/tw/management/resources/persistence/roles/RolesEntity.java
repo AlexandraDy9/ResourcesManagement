@@ -54,4 +54,9 @@ public class RolesEntity extends BaseEntity {
     public void setUsers(Set<UserEntity> users) {
         this.users = users;
     }
+
+    public void removeUser(UserEntity user) {
+        this.users.remove(user);
+        user.getRoles().remove(this);
+    }
 }

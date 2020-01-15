@@ -56,7 +56,7 @@ public class UserService {
         List<UserEntity> usersList = userRepository
                 .findAll()
                 .stream()
-                .filter(userEntity -> !userEntity.getAdmin())
+                .filter(userEntity -> userEntity.getAdmin())
                 .collect(Collectors.toList());
 
         return UserConverter.convertToDaoList(usersList);

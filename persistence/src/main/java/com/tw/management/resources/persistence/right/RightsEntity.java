@@ -40,4 +40,9 @@ public class RightsEntity extends BaseEntity {
     public void setRoles(Set<RolesEntity> roles) {
         this.roles = roles;
     }
+
+    public void removeRole(RolesEntity role) {
+        this.roles.remove(role);
+        role.getRights().remove(this);
+    }
 }

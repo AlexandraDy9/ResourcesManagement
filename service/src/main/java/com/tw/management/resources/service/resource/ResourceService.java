@@ -4,9 +4,12 @@ package com.tw.management.resources.service.resource;
 import com.tw.management.resources.model.ResourceDao;
 import com.tw.management.resources.persistence.resource.ResourceEntity;
 import com.tw.management.resources.persistence.resource.ResourceRepository;
+import com.tw.management.resources.persistence.right.RightRepository;
+import com.tw.management.resources.persistence.right.RightsEntity;
+import com.tw.management.resources.persistence.roles.RolesEntity;
 import com.tw.management.resources.persistence.roles.RolesRepository;
-import javassist.NotFoundException;
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.tw.management.resources.persistence.user.UserEntity;
+import com.tw.management.resources.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +22,15 @@ public class ResourceService {
 
     private final ResourceRepository resourceRepository;
     private final RolesRepository rolesRepository;
+    private final RightRepository rightRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ResourceService(ResourceRepository resourceRepository, RolesRepository rolesRepository) {
+    public ResourceService(ResourceRepository resourceRepository, RolesRepository rolesRepository, RightRepository rightRepository, UserRepository userRepository) {
         this.resourceRepository = resourceRepository;
         this.rolesRepository = rolesRepository;
+        this.rightRepository = rightRepository;
+        this.userRepository = userRepository;
     }
 
     public List<ResourceDao> getAll() {
@@ -61,7 +68,20 @@ public class ResourceService {
 
             else {
                 ResourceEntity resource = resourceRepository.findByTitle(title);
-                rolesRepository.deleteByResource(resource);
+                List<RolesEntity> roles = resource.getRoles();
+
+                List<RightsEntity> rights = rightRepository.findAll();
+                for (RolesEntity role: roles) {
+                    rights.forEach(right -> right.removeRole(role));
+                }
+
+                List<UserEntity> users = userRepository.findAll();
+                for (UserEntity user: users) {
+                    roles.forEach(role -> role.removeUser(user));
+                }
+
+                roles.forEach(rolesRepository::delete);
+                resource.getRoles().removeAll(resource.getRoles());
                 resourceRepository.delete(resource);
             }
         }
