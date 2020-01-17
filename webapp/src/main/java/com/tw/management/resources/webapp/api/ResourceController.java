@@ -7,7 +7,6 @@ import com.tw.management.resources.persistence.right.Rights;
 import com.tw.management.resources.service.principal.PrincipalService;
 import com.tw.management.resources.service.resource.ResourceService;
 import com.tw.management.resources.service.user.UserService;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,6 +60,7 @@ public class ResourceController {
         model.addAttribute("resource", resourceDao);
         model.addAttribute("updateResource", new ResourceDao());
         model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
+        model.addAttribute("currentUser", principalService.getPrincipal());
 
         return "update-resource";
     }
@@ -110,33 +110,6 @@ public class ResourceController {
     public String delete(@PathVariable("title") String title, Model model) {
         try {
             resourceService.delete(title);
-        } catch (NullPointerException | NoSuchElementException e) {
-            System.out.println(e.getMessage());
-        }
-
-        model.addAttribute("resourcesList", resourceService.getAll());
-        model.addAttribute("addResource", new ResourceDao());
-        model.addAttribute("currentUser", principalService.getPrincipal());
-        model.addAttribute("userRights", userService.getRights(principalService.getPrincipal()));
-
-        return "resources";
-    }
-
-    @GetMapping(value = "/admin/{title}")
-    public String ListsForAdmin(@PathVariable("title") String title, Model model) {
-        model.addAttribute("resourceTitle", title);
-        model.addAttribute("usersList", userService.getAllUsers());
-        model.addAttribute("rightsList", new ArrayList<>(Arrays.asList(Rights.values())));
-        model.addAttribute("addRight", new RightDto());
-
-        return "admin";
-    }
-
-    @PostMapping(value = "/admin/assignment/{title}")
-    public String AssignmentAdmin(@PathVariable("title") String title, @Valid RightDto rightDto, Model model) {
-
-        try {
-            userService.assignRights(title, rightDto.getUser(), rightDto.getRight());
         } catch (NullPointerException | NoSuchElementException e) {
             System.out.println(e.getMessage());
         }

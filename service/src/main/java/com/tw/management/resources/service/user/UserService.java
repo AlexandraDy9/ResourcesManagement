@@ -40,38 +40,15 @@ public class UserService {
         this.rightRepository = rightRepository;
     }
 
-    @Transactional
-    public void register(UserDao user) {
-        String encodedPassword = passwordEncoder.encode(
-                user.getPassword()
-        );
-
-        user.setPassword(encodedPassword);
-
-        userRepository.save(UserConverter.convertFromDao(user));
-    }
-
-
     public List<UserDao> getAllUsers() {
         List<UserEntity> usersList = userRepository
                 .findAll()
                 .stream()
-                .filter(userEntity -> userEntity.getAdmin())
+                .filter(UserEntity::getAdmin)
                 .collect(Collectors.toList());
 
         return UserConverter.convertToDaoList(usersList);
     }
-//    @PostConstruct
-//    @Transactional
-//    public void createAdmin() {
-//        UserEntity user = new UserEntity(
-//                "admin",
-//                "admin",
-//                new HashSet<>(Collections.singletonList(Role.ROLE_ADMIN)),
-//                new ArrayList<>()
-//        );
-//    }
-
 
     public Map<String, List<Rights>> getRights(UserEntity userEntity) {
         Map<String, List<Rights>> rightsMap = new HashMap<>();

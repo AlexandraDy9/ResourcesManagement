@@ -13,20 +13,23 @@ import com.tw.management.resources.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.NoSuchElementException;
+
 
 @Service
 public class ResourceService {
 
     private final ResourceRepository resourceRepository;
     private final RolesRepository rolesRepository;
-    private final RightRepository rightRepository;
     private final UserRepository userRepository;
+    private final RightRepository rightRepository;
 
     @Autowired
-    public ResourceService(ResourceRepository resourceRepository, RolesRepository rolesRepository, RightRepository rightRepository, UserRepository userRepository) {
+    public ResourceService(ResourceRepository resourceRepository,
+                           RolesRepository rolesRepository,
+                           RightRepository rightRepository,
+                           UserRepository userRepository) {
         this.resourceRepository = resourceRepository;
         this.rolesRepository = rolesRepository;
         this.rightRepository = rightRepository;
