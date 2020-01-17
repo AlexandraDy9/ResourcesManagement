@@ -6,14 +6,14 @@ import com.tw.management.resources.persistence.user.UserEntity;
 import com.tw.management.resources.service.principal.PrincipalService;
 import com.tw.management.resources.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 
-@RestController
-@RequestMapping(value = "/admin")
+@Controller
 public class UserController {
 
     private final UserService userService;
@@ -23,6 +23,11 @@ public class UserController {
     public UserController(UserService userService, PrincipalService principalService) {
         this.userService = userService;
         this.principalService = principalService;
+    }
+
+    @RequestMapping(value="/login")
+    public String homePage() {
+        return "login";
     }
 
 

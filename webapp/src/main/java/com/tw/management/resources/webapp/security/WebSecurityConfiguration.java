@@ -2,20 +2,17 @@ package com.tw.management.resources.webapp.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
@@ -41,22 +38,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) {
         try {
             http
-                    .httpBasic().and()
                     .authorizeRequests()
                     .antMatchers(HttpMethod.GET, "/user/principal").permitAll()
-                    .antMatchers(HttpMethod.GET, "/configuration/ui", "/swagger-resources/**", "/configuration/auth", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated()
                     .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/resources")
+                    .permitAll()
+                    .and()
                     .logout()
-                    .logoutUrl("/logout").permitAll();
-            http
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                    .maximumSessions(1)
-                    .maxSessionsPreventsLogin(false);
+                    .permitAll();
 
             http.cors().and().csrf().disable();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,21 +71,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public HttpSessionIdResolver sessionStrategy() {
-        return HeaderHttpSessionIdResolver.xAuthToken();
-    }
-
-    @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher();
-    }
-
-    @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension(){
-        return new SecurityEvaluationContextExtension();
     }
 
     @Bean
